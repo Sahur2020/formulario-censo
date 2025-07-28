@@ -2,120 +2,49 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Censo Alto dos Pinheiros</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f2f2f2;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 500px;
-      margin: auto;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 15px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    h2 {
-      text-align: center;
-    }
-    .mensagem {
-      text-align: center;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+  <title>Formulário Censo</title>
 </head>
 <body>
-  <h2>Censo Alto dos Pinheiros</h2>
   <form id="formulario">
-    <label for="nome">Nome:</label>
-    <input type="text" name="nome" id="nome" required>
-
-    <label for="cpf">CPF:</label>
-    <input type="text" name="cpf" id="cpf" required pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" title="Digite um CPF válido (ex: 123.456.789-00)">
-
-    <label for="rua">Rua:</label>
-    <input type="text" name="rua" id="rua" required>
-
-    <label for="quadra">Quadra:</label>
-    <input type="text" name="quadra" id="quadra" required>
-
-    <label for="lote">Lote:</label>
-    <input type="text" name="lote" id="lote" required>
-
-    <label for="celular">Número de Celular:</label>
-    <input type="tel" name="celular" id="celular" required pattern="\(?\d{2}\)?\s?\d{4,5}-?\d{4}" title="Digite um número válido (ex: (11) 91234-5678)">
-
-    <label for="placa">Placa do veículo (carro ou moto):</label>
-    <input type="text" name="placa" id="placa" required>
-
-    <label for="tipo">Você é:</label>
-    <select name="tipo" id="tipo">
+    <input type="text" name="nome" placeholder="Nome" required>
+    <input type="text" name="cpf" placeholder="CPF" required>
+    <input type="text" name="rua" placeholder="Rua" required>
+    <input type="text" name="quadra" placeholder="Quadra" required>
+    <input type="text" name="lote" placeholder="Lote" required>
+    <input type="text" name="celular" placeholder="Celular" required>
+    <input type="text" name="placa" placeholder="Placa" required>
+    <select name="tipo" required>
+      <option value="">Selecione</option>
       <option value="Proprietário">Proprietário</option>
-      <option value="Locatário">Locatário</option>
+      <option value="Inquilino">Inquilino</option>
     </select>
-
     <button type="submit">Enviar</button>
   </form>
 
-  <div class="mensagem" id="mensagem"></div>
+  <p id="mensagem"></p>
 
   <script>
-    const form = document.getElementById('formulario');
+    const formulario = document.getElementById('formulario');
     const mensagem = document.getElementById('mensagem');
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+    formulario.addEventListener('submit', function(event) {
+      event.preventDefault(); // Impede o recarregamento da página
 
-      const botao = form.querySelector('button');
-      botao.disabled = true;
+      const dados = Object.fromEntries(new FormData(formulario));
 
-      const dados = {
-        nome: form.nome.value,
-        cpf: form.cpf.value,
-        rua: form.rua.value,
-        quadra: form.quadra.value,
-        lote: form.lote.value,
-        celular: form.celular.value,
-        placa: form.placa.value,
-        tipo: form.tipo.value
-      };
-
-      fetch(https://script.google.com/macros/s/AKfycbwB5ovQaLnkGWoyijBhvUXvUJL6-9WPGdusKErpXCLdSGfZfcRWn3sNNMqTEPoWS8Ux1w/exec, {
+      fetch('https://script.google.com/macros/s/AKfycbxFIqCzDO8YOGMm7NoU_Aq1-QZivYSaz-ehRc5uebANpnHU44_-8XFUb2K1qmO0LZRxEg/exec', {
         method: 'POST',
-        body: JSON.stringify(dados),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
       })
       .then(response => response.text())
-      .then(result => {
-        mensagem.innerText = "✅ Dados enviados com sucesso!";
-        form.reset();
-        botao.disabled = false;
+      .then(data => {
+        mensagem.textContent = 'Dados enviados com sucesso!';
+        formulario.reset();
       })
       .catch(error => {
-        mensagem.innerText = "❌ Erro ao enviar: " + error.message;
-        botao.disabled = false;
+        console.error('Erro:', error);
+        mensagem.textContent = 'Erro ao enviar os dados.';
       });
     });
   </script>
