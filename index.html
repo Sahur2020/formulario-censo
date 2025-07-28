@@ -5,49 +5,55 @@
   <title>Formulário Censo</title>
 </head>
 <body>
+  <h1>Formulário Censo</h1>
+
   <form id="formulario">
-    <input type="text" name="nome" placeholder="Nome" required>
-    <input type="text" name="cpf" placeholder="CPF" required>
-    <input type="text" name="rua" placeholder="Rua" required>
-    <input type="text" name="quadra" placeholder="Quadra" required>
-    <input type="text" name="lote" placeholder="Lote" required>
-    <input type="text" name="celular" placeholder="Celular" required>
-    <input type="text" name="placa" placeholder="Placa" required>
+    <input type="text" name="nome" placeholder="Nome" required><br>
+    <input type="text" name="cpf" placeholder="CPF" required><br>
+    <input type="text" name="rua" placeholder="Rua" required><br>
+    <input type="text" name="quadra" placeholder="Quadra" required><br>
+    <input type="text" name="lote" placeholder="Lote" required><br>
+    <input type="text" name="celular" placeholder="Celular" required><br>
+    <input type="text" name="placa" placeholder="Placa" required><br>
     <select name="tipo" required>
-      <option value="">Selecione</option>
+      <option value="">Selecione o tipo</option>
       <option value="Proprietário">Proprietário</option>
       <option value="Inquilino">Inquilino</option>
-    </select>
-    <button type="submit">Enviar</button>
+    </select><br><br>
+    <button id="btnEnviar" type="submit">Enviar</button>
   </form>
 
   <p id="mensagem"></p>
 
+  <!-- O script está aqui no final, depois do formulário -->
   <script>
-    const formulario = document.getElementById('formulario');
-    const mensagem = document.getElementById('mensagem');
+    document.addEventListener("DOMContentLoaded", function () {
+      const formulario = document.getElementById("formulario");
+      const mensagem = document.getElementById("mensagem");
 
-    formulario.addEventListener('submit', function(event) {
-      event.preventDefault(); // Impede o recarregamento da página
+      formulario.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-      const dados = Object.fromEntries(new FormData(formulario));
+        const dados = Object.fromEntries(new FormData(formulario));
 
-      fetch('https://script.google.com/macros/s/AKfycbxFIqCzDO8YOGMm7NoU_Aq1-QZivYSaz-ehRc5uebANpnHU44_-8XFUb2K1qmO0LZRxEg/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dados)
-      })
-      .then(response => response.text())
-      .then(data => {
-        mensagem.textContent = 'Dados enviados com sucesso!';
-        formulario.reset();
-      })
-      .catch(error => {
-        console.error('Erro:', error);
-        mensagem.textContent = 'Erro ao enviar os dados.';
+        fetch("https://script.google.com/macros/s/AKfycbxFIqCzDO8YOGMm7NoU_Aq1-QZivYSaz-ehRc5uebANpnHU44_-8XFUb2K1qmO0LZRxEg/exec", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dados)
+        })
+          .then(response => response.text())
+          .then(data => {
+            mensagem.textContent = "Dados enviados com sucesso!";
+            formulario.reset();
+          })
+          .catch(error => {
+            console.error("Erro ao enviar:", error);
+            mensagem.textContent = "Erro ao enviar os dados.";
+          });
       });
     });
   </script>
 </body>
 </html>
-
