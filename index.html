@@ -25,7 +25,6 @@
 
   <p id="mensagem"></p>
 
-  <!-- O script está aqui no final, depois do formulário -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const formulario = document.getElementById("formulario");
@@ -35,6 +34,7 @@
         event.preventDefault();
 
         const dados = Object.fromEntries(new FormData(formulario));
+        console.log("Enviando dados:", dados); // debug no console
 
         fetch("https://script.google.com/macros/s/AKfycbxFIqCzDO8YOGMm7NoU_Aq1-QZivYSaz-ehRc5uebANpnHU44_-8XFUb2K1qmO0LZRxEg/exec", {
           method: "POST",
@@ -43,17 +43,19 @@
           },
           body: JSON.stringify(dados)
         })
-          .then(response => response.text())
-          .then(data => {
-            mensagem.textContent = "Dados enviados com sucesso!";
-            formulario.reset();
-          })
-          .catch(error => {
-            console.error("Erro ao enviar:", error);
-            mensagem.textContent = "Erro ao enviar os dados.";
-          });
+        .then(response => response.text())
+        .then(data => {
+          console.log("Resposta do script:", data);
+          mensagem.textContent = "Dados enviados com sucesso!";
+          formulario.reset();
+        })
+        .catch(error => {
+          console.error("Erro ao enviar:", error);
+          mensagem.textContent = "Erro ao enviar os dados.";
+        });
       });
     });
   </script>
 </body>
 </html>
+
