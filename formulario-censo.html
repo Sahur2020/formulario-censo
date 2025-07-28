@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Censo Alto dos Pinheiros</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f2f2f2;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      margin: auto;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    h2 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Censo Alto dos Pinheiros</h2>
+  <form id="formulario">
+    <label>Nome:</label>
+    <input type="text" name="nome" required>
+
+    <label>CPF:</label>
+    <input type="text" name="cpf" required>
+
+    <label>Rua:</label>
+    <input type="text" name="rua" required>
+
+    <label>Quadra:</label>
+    <input type="text" name="quadra" required>
+
+    <label>Lote:</label>
+    <input type="text" name="lote" required>
+
+    <label>Número de Celular:</label>
+    <input type="tel" name="celular" required>
+
+    <label>Placa do veículo (carro ou moto):</label>
+    <input type="text" name="placa" required>
+
+    <label>Você é:</label>
+    <select name="tipo">
+      <option value="Proprietário">Proprietário</option>
+      <option value="Locatário">Locatário</option>
+    </select>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('formulario');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const dados = {
+        nome: form.nome.value,
+        cpf: form.cpf.value,
+        rua: form.rua.value,
+        quadra: form.quadra.value,
+        lote: form.lote.value,
+        celular: form.celular.value,
+        placa: form.placa.value,
+        tipo: form.tipo.value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbx3_guVkUvHL2WzrjgWCIE4S5I4tY7sTjyUeIV-5fWGFqZVwDSShIZQQWGmqCbnYH4/exec', {
+        method: 'POST',
+        body: JSON.stringify(dados),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert("Dados enviados com sucesso!");
+        form.reset();
+      })
+      .catch(error => {
+        alert("Erro ao enviar: " + error.message);
+      });
+    });
+  </script>
+</body>
+</html>
